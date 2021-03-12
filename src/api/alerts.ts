@@ -1,6 +1,6 @@
 export default {
   async objectInfo (name: string) {
-    const response = await fetch(`http://localhost:8000/explorer/ztfobject/${name}/`)
+    const response = await fetch(`${process.env.VUE_APP_API_ROOT}/explorer/ztfobject/${name}/`)
 
     if (!response.ok) {
       const message = `An error has occured: ${response.status}`
@@ -12,7 +12,7 @@ export default {
   },
 
   async lasairQuery (queryId: string) {
-    const response = await fetch(`http://localhost:8000/explorer/lasair_query?query_id=${queryId}`)
+    const response = await fetch(`${process.env.VUE_APP_API_ROOT}/explorer/lasair_query?query_id=${queryId}`)
 
     if (!response.ok) {
       const message = `An error has occured: ${response.status}`
