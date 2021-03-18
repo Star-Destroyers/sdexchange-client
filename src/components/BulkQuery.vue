@@ -10,6 +10,10 @@
           <p><strong>{{ failed.broker }}</strong>. Error: {{ failed.error }}</p>
         </div>
       </div>
+      <div class="brokerResult" v-if="results.mars">
+        <h2>Mars</h2>
+        <MarsResult :result="results.mars"></MarsResult>
+      </div>
       <div class="brokerResult" v-if="results.lasair">
         <h2>Lasair</h2>
         <LasairResult :result="results.lasair"></LasairResult>
@@ -17,10 +21,6 @@
       <div class="brokerResult" v-if="results.alerce">
         <h2>Alerce</h2>
         <AlerceResult :result="results.alerce"></AlerceResult>
-      </div>
-      <div class="brokerResult" v-if="results.mars">
-        <h2>Mars</h2>
-        <MarsResult :result="results.mars"></MarsResult>
       </div>
       <div class="brokerResult" v-if="results.antares">
         <h2>Antares</h2>
