@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <input v-model="objectId">
-    <button @click="bulkQuery">Search</button>
+    <input type="text" v-model="objectId">
+    <button class="btn btn-blue ml-2" @click="bulkQuery">Search</button>
     <div v-if="results">
       <p><strong>ZTF Object ID: {{ results.name }}</strong></p>
       <div v-if="results.failed.length > 0">
@@ -27,12 +27,15 @@
         <AntaresResult :result="results.antares"></AntaresResult>
       </div>
     </div>
-    <!-- <p>{{ results }}</p> -->
+    <div v-else>
+      <Spinner v-show="loading"></Spinner>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
+import Spinner from '@/components/ui/Spinner.vue'
 import LasairResult from '@/components/brokers/LasairResult.vue'
 import AntaresResult from '@/components/brokers/AntaresResult.vue'
 import MarsResult from '@/components/brokers/MarsResult.vue'
@@ -44,24 +47,34 @@ export default defineComponent({
     LasairResult,
     AntaresResult,
     AlerceResult,
-    MarsResult
+    MarsResult,
+    Spinner
   },
   setup () {
     const objectId = ref('ZTF18aaviokz')
     const error = ref('')
     const results = ref(null)
+    const loading = ref(false)
 
     const bulkQuery = async () => {
       error.value = ''
       results.value = null
+      loading.value = true
       try {
         results.value = await alertApi.objectInfo(objectId.value)
       } catch (e) {
         error.value = e
       }
+      loading.value = false
     }
 
-    return { objectId: objectId, error: error, results: results, bulkQuery: bulkQuery }
+    return {
+      objectId,
+      error,
+      results,
+      loading,
+      bulkQuery
+    }
   }
 })
 </script>

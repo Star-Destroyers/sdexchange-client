@@ -1,16 +1,16 @@
 <template>
   <div class="main">
-    <h1>Lasair Query</h1>
     <p>Enter the <a href="https://lasair-iris.roe.ac.uk/querylist/">Lasair Iris stored query</a> name here to fetch current results.</p>
-    <input v-model="queryId" />
-    <button @click="fetchLasairQuery">Search</button>
+    <input type="text" v-model="queryId" class="mr-2"/>
+    <button class="btn btn-blue inline-flex items-center" @click="fetchLasairQuery">
+      Search
+     </button>
     <div v-if="error">
       <span class="error">There was a problem fetching that query: {{ error }}</span>
     </div>
     <div v-if="results">
-      <p><strong>Last Entry: {{ results.last_entry }}</strong></p>
-      <table>
-        <thead>
+      <table class="min-w-full divide-y divide-gray-200 mt-5">
+        <thead class="bg-gray-50 text-left">
           <tr>
             <th>ObjectId</th>
             <th>UTC</th>
@@ -42,42 +42,47 @@
         </tbody>
       </table>
     </div>
+    <div v-else>
+      <Spinner v-show="loading"></Spinner>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+
 import alertApi from '@/api/alerts'
+import Spinner from '@/components/ui/Spinner.vue'
+
 export default defineComponent({
+  components: {
+    Spinner
+  },
   setup () {
     const queryId = ref('2TDE-candidates-EA')
     const results = ref(null)
     const error = ref('')
+    const loading = ref(false)
 
     const fetchLasairQuery = async () => {
       results.value = null
       error.value = ''
+      loading.value = true
 
       try {
         results.value = await alertApi.lasairQuery(queryId.value)
       } catch (e) {
         error.value = e
       }
+      loading.value = false
     }
 
     return {
-      queryId: queryId,
-      results: results,
-      fetchLasairQuery: fetchLasairQuery,
-      error: error
+      queryId,
+      results,
+      fetchLasairQuery,
+      error,
+      loading
     }
   }
 })
 </script>
-<style>
-table {
-  width: 100%
-}
-.error {
-  color: orangered
-}
-</style>
