@@ -1,31 +1,51 @@
 <template>
   <div class="main">
-    <input type="text" v-model="objectId">
+    <input class="mt-1" type="text" v-model="objectId">
     <button class="btn btn-blue ml-2" @click="bulkQuery">Search</button>
     <div v-if="results">
-      <p><strong>ZTF Object ID: {{ results.name }}</strong></p>
-      <div v-if="results.failed.length > 0">
-        <h2>Brokers with no data:</h2>
-        <div v-for="(failed, idx) in results.failed" :key="idx">
-          <p><strong>{{ failed.broker }}</strong>. Error: {{ failed.error }}</p>
+      <!-- Show which brokers have results -->
+      <div class="flex flex-row">
+        <div v-if="results.mars">
+          <Check></Check><span class="align-bottom mr-2"> MARS</span>
+        </div>
+        <div v-if="results.lasair">
+          <Check></Check><span class="align-bottom mr-2"> Lasair</span>
+        </div>
+        <div v-if="results.alerce">
+          <Check></Check><span class="align-bottom mr-2"> Alerce</span>
+        </div>
+        <div v-if="results.antares">
+          <Check></Check><span class="align-bottom mr-2"> Antares</span>
         </div>
       </div>
-      <div class="brokerResult" v-if="results.mars">
-        <h2>Mars</h2>
-        <MarsResult :result="results.mars"></MarsResult>
+
+      <div v-if="results.failed.length > 0">
+        <div v-for="(failed, idx) in results.failed" :key="idx">
+          <p><Cross></Cross><span class="align-bottom mr-2">{{ failed.broker }}</span></p>
+          <p>{{ failed.error }}</p>
+        </div>
       </div>
-      <div class="brokerResult" v-if="results.lasair">
-        <h2>Lasair</h2>
-        <LasairResult :result="results.lasair"></LasairResult>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <div class="mt-4" v-if="results.mars">
+            <MarsResult :result="results.mars"></MarsResult>
+          </div>
+          <div class="mt-4" v-if="results.lasair">
+            <LasairResult :result="results.lasair"></LasairResult>
+          </div>
+          <div class="mt-4" v-if="results.alerce">
+            <AlerceResult :result="results.alerce"></AlerceResult>
+          </div>
+          <div class="mt-4" v-if="results.antares">
+            <AntaresResult :result="results.antares"></AntaresResult>
+          </div>
+        </div>
+        <div>
+          <MarsLightCurve v-if="results.mars" :lightcurve="results.mars.data"></MarsLightCurve>
+        </div>
       </div>
-      <div class="brokerResult" v-if="results.alerce">
-        <h2>Alerce</h2>
-        <AlerceResult :result="results.alerce"></AlerceResult>
-      </div>
-      <div class="brokerResult" v-if="results.antares">
-        <h2>Antares</h2>
-        <AntaresResult :result="results.antares"></AntaresResult>
-      </div>
+
     </div>
     <div v-else>
       <Spinner v-show="loading"></Spinner>
@@ -33,14 +53,19 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, defineAsyncComponent, ref } from 'vue'
 
-import Spinner from '@/components/ui/Spinner.vue'
+import Spinner from '@/components/ui/icons/Spinner.vue'
+import Check from '@/components/ui/icons/Check.vue'
+import Cross from '@/components/ui/icons/Cross.vue'
 import LasairResult from '@/components/brokers/LasairResult.vue'
 import AntaresResult from '@/components/brokers/AntaresResult.vue'
 import MarsResult from '@/components/brokers/MarsResult.vue'
 import AlerceResult from '@/components/brokers/AlerceResult.vue'
 import alertApi from '@/api/alerts'
+const MarsLightCurve = defineAsyncComponent(() => import(
+  /* webpackChunkName: "mars-light-curve" */ '@/components/brokers/MarsLightCurve.vue'
+))
 
 export default defineComponent({
   components: {
@@ -48,7 +73,10 @@ export default defineComponent({
     AntaresResult,
     AlerceResult,
     MarsResult,
-    Spinner
+    MarsLightCurve,
+    Spinner,
+    Check,
+    Cross
   },
   setup () {
     const objectId = ref('ZTF18aaviokz')

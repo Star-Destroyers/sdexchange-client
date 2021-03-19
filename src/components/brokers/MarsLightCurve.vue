@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p>This is a MARS lightcurve</p>
     <div id="plot" ref="plot"></div>
+    <span class="text-sm text-gray-500">Lightcurve courtesy of MARS</span>
   </div>
 </template>
 <script lang="ts">
@@ -45,7 +45,6 @@ export default defineComponent({
   },
   setup (props) {
     const plot = ref<HTMLElement | null>(null)
-    console.log(props)
 
     const buildSeries = (fid: number) => {
       // Finds all previous candidates of this object with the same filter that are not non-detections
@@ -141,7 +140,11 @@ export default defineComponent({
       })
 
       const layout = {
-        title: 'Light Curve',
+        title: {
+          text: 'Light Curve',
+          x: 0.05,
+          xanchor: 'left'
+        },
         yaxis: {
           title: 'magnitude',
           autorange: 'reversed'

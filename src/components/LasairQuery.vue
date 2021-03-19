@@ -51,7 +51,7 @@
 import { defineComponent, ref } from 'vue'
 
 import alertApi from '@/api/alerts'
-import Spinner from '@/components/ui/Spinner.vue'
+import Spinner from '@/components/ui/icons/Spinner.vue'
 
 export default defineComponent({
   components: {
