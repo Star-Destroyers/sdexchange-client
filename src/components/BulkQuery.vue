@@ -26,8 +26,8 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
+      <div class="grid grid-cols-5 gap-4">
+        <div class="col-span-5 lg:col-span-3">
           <div class="mt-4" v-if="results.mars">
             <MarsResult :result="results.mars"></MarsResult>
           </div>
@@ -41,8 +41,9 @@
             <AntaresResult :result="results.antares"></AntaresResult>
           </div>
         </div>
-        <div>
+        <div class="col-span-5 lg:col-span-2">
           <MarsLightCurve v-if="results.mars" :lightcurve="results.mars.data"></MarsLightCurve>
+          <Aladin v-if="results.mars" :ra="results.mars.ra" :dec="results.mars.dec"></Aladin>
         </div>
       </div>
 
@@ -66,6 +67,9 @@ import alertApi from '@/api/alerts'
 const MarsLightCurve = defineAsyncComponent(() => import(
   /* webpackChunkName: "mars-light-curve" */ '@/components/brokers/MarsLightCurve.vue'
 ))
+const Aladin = defineAsyncComponent(() => import(
+  /* webpackChunkName: "aladin" */ '@/components/Aladin.vue'
+))
 
 export default defineComponent({
   components: {
@@ -74,6 +78,7 @@ export default defineComponent({
     AlerceResult,
     MarsResult,
     MarsLightCurve,
+    Aladin,
     Spinner,
     Check,
     Cross
