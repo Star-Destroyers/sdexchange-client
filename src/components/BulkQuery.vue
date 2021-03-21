@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <input class="mt-1" type="text" v-model="objectId">
-    <button class="btn btn-blue ml-2" @click="bulkQuery">Search</button>
+    <input class="mt-1" type="text" v-model="objectId" placeholder="ZTF19acvtuva">
+    <button class="btn btn-blue ml-2" @click="bulkQuery" :disabled="objectId === ''">Search</button>
     <div v-if="results">
       <!-- Show which brokers have results -->
       <div class="flex flex-row">
@@ -54,7 +54,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, ref } from 'vue'
+import { defineComponent, defineAsyncComponent, ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import Spinner from '@/components/ui/icons/Spinner.vue'
 import Check from '@/components/ui/icons/Check.vue'
@@ -84,10 +85,12 @@ export default defineComponent({
     Cross
   },
   setup () {
-    const objectId = ref('ZTF18aaviokz')
+    const objectId = ref('')
     const error = ref('')
     const results = ref(null)
     const loading = ref(false)
+    const route = useRoute()
+    const router = useRouter()
 
     const bulkQuery = async () => {
       error.value = ''
@@ -95,11 +98,22 @@ export default defineComponent({
       loading.value = true
       try {
         results.value = await alertApi.objectInfo(objectId.value)
+        router.push({ query: { object: objectId.value } })
       } catch (e) {
         error.value = e
       }
       loading.value = false
     }
+
+    if (route.query.object) {
+      objectId.value = route.query.object as string
+    }
+
+    onMounted(() => {
+      if (objectId.value !== '') {
+        bulkQuery()
+      }
+    })
 
     return {
       objectId,

@@ -21,7 +21,6 @@ export default defineComponent({
   },
   setup (props) {
     const loadAladin = () => {
-      console.log('confused')
       return new Promise<void>((resolve) => {
         const script = document.createElement('script')
         script.setAttribute(

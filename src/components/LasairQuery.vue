@@ -27,7 +27,7 @@
          </thead>
         <tbody>
           <tr v-for="object in results.digest" :key="object.objectId">
-            <td>{{ object.objectId }}</td>
+            <td><router-link :to="'/objectdetails?object=' + object.objectId">{{ object.objectId }}</router-link></td>
             <td>{{ object.UTC }}</td>
             <td>{{ object.rising }}</td>
             <td>{{ object.fading }}</td>
