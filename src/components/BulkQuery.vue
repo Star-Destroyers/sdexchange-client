@@ -40,6 +40,9 @@
           <div class="mt-4" v-if="results.antares">
             <AntaresResult :result="results.antares"></AntaresResult>
           </div>
+          <div class="mt-4" v-if="results.common">
+            <TNSCone :ra="results.common.ra" :dec="results.common.dec"></TNSCone>
+          </div>
         </div>
         <div class="col-span-5 lg:col-span-2">
           <MarsLightCurve v-if="results.mars" :lightcurve="results.mars.data"></MarsLightCurve>
@@ -64,6 +67,7 @@ import LasairResult from '@/components/brokers/LasairResult.vue'
 import AntaresResult from '@/components/brokers/AntaresResult.vue'
 import MarsResult from '@/components/brokers/MarsResult.vue'
 import AlerceResult from '@/components/brokers/AlerceResult.vue'
+import TNSCone from '@/components/brokers/TNSCone.vue'
 import alertApi from '@/api/alerts'
 const MarsLightCurve = defineAsyncComponent(() => import(
   /* webpackChunkName: "mars-light-curve" */ '@/components/brokers/MarsLightCurve.vue'
@@ -80,6 +84,7 @@ export default defineComponent({
     MarsResult,
     MarsLightCurve,
     Aladin,
+    TNSCone,
     Spinner,
     Check,
     Cross
