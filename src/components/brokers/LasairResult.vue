@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="cm in data.classification.crossmatches" :key="cm.catalog_object_id">
+        <tr v-for="cm in result.classification.crossmatches" :key="cm.catalog_object_id">
           <td>{{ cm.catalogue_object_type }}</td>
           <td class="px-2">{{ cm.catalogue_table_name.split('/')[0] }}</td>
           <td class="px-2"><a :href="'http://skyserver.sdss.org/dr12/en/tools/explore/Summary.aspx?id=' + cm.catalogue_object_id" target="_blank">{{ cm.catalogue_object_id }}</a></td>
@@ -28,8 +28,8 @@
     </table>
 
     <!-- Classification table -->
-    <p class="mt-2">Classification: <strong>{{ classification.type }}</strong></p>
-    <div v-html="classification.info"></div>
+    <p class="mt-2">Classification: <strong>{{ result.classification.type }}</strong></p>
+    <div v-html="result.classification.description"></div>
 
     <!-- magnitute table -->
     <table class="text-left table-auto divide-y divide-gray-200 mt-2">
@@ -70,18 +70,11 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const classification = computed(() => {
-      const clsfc = props.result.classification.classifications[props.result.name]
-      const clsfcType = clsfc[0]
-      const clsfcInfo = clsfc[1]
-      return { type: clsfcType, info: clsfcInfo }
-    })
-
     const dataDisplay = computed(() => {
       return JSON.stringify(props.result, null, 2)
     })
 
-    return { data: props.result, dataDisplay, classification }
+    return { data: props.result, dataDisplay }
   }
 })
 </script>

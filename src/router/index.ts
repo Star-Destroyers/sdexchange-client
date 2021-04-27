@@ -1,12 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
-import ObjectDetails from '../views/ObjectDetails.vue'
+import ObjectDetails from '@/views/ObjectDetails.vue'
+import LasairQuery from '@/components/LasairQuery.vue'
+import TargetList from '@/views/targets/TargetList.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/lasair',
+    name: 'Lasair Query',
+    component: LasairQuery
+  },
+  {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Latest Targets',
+    component: TargetList
   },
   {
     path: '/objectdetails',
