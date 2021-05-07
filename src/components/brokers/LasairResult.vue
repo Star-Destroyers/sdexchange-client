@@ -3,7 +3,7 @@
     <div class="bg-blue-200 border-b border-gray-500 text-lg p-2">Lasair</div>
     <!-- top links -->
     <p>
-      <a :href="data.url" target="_blank">View on lasair-iris.roe.ac.uk</a>
+      <a :href="result.url" target="_blank">View on lasair-iris.roe.ac.uk</a>
     </p>
 
     <!-- Crossmatches table -->
@@ -42,17 +42,17 @@
       <tbody>
         <tr>
           <td class="text-red-700">R</td>
-          <td class="px-2">{{ data.data.rmag.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.magrmax.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.magrmin.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.magrmean.toFixed(2) }}</td>
+          <td class="px-2">{{ result.rmag.toFixed(2) }}</td>
+          <td class="px-2">{{ result.magrmax.toFixed(2) }}</td>
+          <td class="px-2">{{ result.magrmin.toFixed(2) }}</td>
+          <td class="px-2">{{ result.magrmean.toFixed(2) }}</td>
         </tr>
         <tr>
           <td class="text-green-700">G</td>
-          <td class="px-2">{{ data.data.gmag.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.maggmax.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.maggmin.toFixed(2) }}</td>
-          <td class="px-2">{{ data.data.maggmean.toFixed(2) }}</td>
+          <td class="px-2">{{ result.gmag.toFixed(2) }}</td>
+          <td class="px-2">{{ result.maggmax.toFixed(2) }}</td>
+          <td class="px-2">{{ result.maggmin.toFixed(2) }}</td>
+          <td class="px-2">{{ result.maggmean.toFixed(2) }}</td>
         </tr>
       </tbody>
     </table>
@@ -60,7 +60,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
@@ -69,12 +69,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup (props) {
-    const dataDisplay = computed(() => {
-      return JSON.stringify(props.result, null, 2)
-    })
-
-    return { data: props.result, dataDisplay }
+  setup () {
+    return {}
   }
 })
 </script>
