@@ -3,7 +3,7 @@
   <div class="bg-blue-200 border-b border-gray-500 text-lg p-2">Alerce</div>
   <a :href="result.url" target="_blank">View on alerce.online</a>
   <p>Most probable classification: <strong>{{ result.classification.type }} {{ result.classification.probability.toFixed(2) }}% </strong></p>
-  <table class="table-auto divide-y divide-gray-200 mt-2">
+  <table class="table-auto divide-y divide-gray-200 mt-2" v-if="result.classification.late">
     <caption>Classification</caption>
     <thead>
       <tr>
@@ -26,7 +26,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-if="result.classification.late">
+      <tr>
         <td>Late</td>
         <td>{{ result.classification.late.agn_i.toFixed(2) }}</td>
         <td>{{ result.classification.late.blazar.toFixed(2) }}</td>
@@ -44,23 +44,28 @@
         <td>{{ result.classification.late.lpv.toFixed(2) }}</td>
         <td>{{ result.classification.late.periodic_other.toFixed(2) }}</td>
       </tr>
-      <tr v-if="result.classification.early">
+    </tbody>
+  </table>
+  <table class="table-auto divide-y divide-gray-200 mt-2" v-if="result.classification.early">
+    <caption>Classification</caption>
+    <thead>
+      <tr>
+        <th>Class</th>
+        <th class="px-1">AGN</th>
+        <th class="px-1">SN</th>
+        <th class="px-1">VS</th>
+        <th class="px-1">Asteroid</th>
+        <th class="px-1">Bogus</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td>Early</td>
-        <td>{{ result.classification.early.agn_i.toFixed(2) }}</td>
-        <td>{{ result.classification.early.blazar.toFixed(2) }}</td>
-        <td>{{ result.classification.early.cv_nova.toFixed(2) }}</td>
-        <td>{{ result.classification.early.snia.toFixed(2) }}</td>
-        <td>{{ result.classification.early.snibc.toFixed(2) }}</td>
-        <td>{{ result.classification.early.snii.toFixed(2) }}</td>
-        <td>{{ result.classification.early.sniin.toFixed(2) }}</td>
-        <td>{{ result.classification.early.slsn.toFixed(2) }}</td>
-        <td>{{ result.classification.early.ebsd_d.toFixed(2) }}</td>
-        <td>{{ result.classification.early.ebc.toFixed(2) }}</td>
-        <td>{{ result.classification.early.dsct.toFixed(2) }}</td>
-        <td>{{ result.classification.early.rrl.toFixed(2) }}</td>
-        <td>{{ result.classification.early.ceph.toFixed(2) }}</td>
-        <td>{{ result.classification.early.lpv.toFixed(2) }}</td>
-        <td>{{ result.classification.early.periodic_other.toFixed(2) }}</td>
+        <td>{{ result.classification.early.agn.toFixed(2) }}</td>
+        <td>{{ result.classification.early.sn.toFixed(2) }}</td>
+        <td>{{ result.classification.early.vs.toFixed(2) }}</td>
+        <td>{{ result.classification.early.asteroid.toFixed(2) }}</td>
+        <td>{{ result.classification.early.bogus.toFixed(2) }}</td>
       </tr>
     </tbody>
   </table>
