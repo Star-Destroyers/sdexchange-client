@@ -31,7 +31,7 @@
   </table>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from '@/store/index'
 import SparkLine from '@/components/SparkLine.vue'
 
@@ -41,6 +41,9 @@ export default defineComponent({
   },
   setup () {
     const store = useStore()
+    onMounted(() => {
+      store.dispatch('fetchTargets')
+    })
     return {
       targets: computed(() => store.state.targets.targets)
     }

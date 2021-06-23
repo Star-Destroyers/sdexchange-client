@@ -75,10 +75,10 @@
                 From: "transform opacity-100 scale-100"
                 To: "transform opacity-0 scale-95"
             -->
-            <div v-show="userMenu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-              <a v-show="loggedIn" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-              <a v-show="loggedIn" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
-              <a v-show="!loggedIn" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</a>
+            <div v-show="userMenu" @click="userMenu = !userMenu" class="z-40 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+              <a v-show="loggedIn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
+              <a v-show="loggedIn" @click="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+              <router-link to="login" v-show="!loggedIn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</router-link>
             </div>
           </div>
         </div>
@@ -98,15 +98,21 @@
   </nav>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useStore } from '@/store/index'
 
 export default defineComponent({
   setup () {
+    const store = useStore()
     const mainMenu = ref(false)
     const userMenu = ref(false)
-    const loggedIn = ref(false)
+    const loggedIn = computed(() => store.state.auth.loggedIn)
+    const logout = () => store.dispatch('auth/logout')
     return {
-      userMenu, loggedIn, mainMenu
+      userMenu,
+      loggedIn,
+      mainMenu,
+      logout
     }
   }
 })
